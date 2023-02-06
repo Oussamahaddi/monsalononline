@@ -83,4 +83,8 @@
                 echo json_encode(['message' => 'something wrong !!!!!!']);
             }
         }
+
+        public function show() {
+            echo $this->appoinmenentModel->getAllApp();
+        }
     }

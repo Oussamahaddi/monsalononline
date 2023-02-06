@@ -14,8 +14,7 @@
       name:'App',
       methods:{
         api1(){
-          axios.get("http://localhost/Vuejs/User/index")
-          .then((res)=>console.log(res))
+          axios.get("http://localhost/monsalonline/Pages/index").then((res)=>console.log(res))
         },
       }
     }

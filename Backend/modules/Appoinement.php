@@ -11,6 +11,12 @@
         //     $this->db->query("SELECT * FROM rendez_vous");
         // }
 
+        public function getAllApp() {
+            $this->db->query("SELECT * FROM rendez_vous");
+            $row = $this->db->resultSet();
+            return json_encode($row);
+        }
+
         public function getAppById($id) {
             $this->db->query("SELECT * FROM rendez_vous WHERE id = :id");
             $this->db->bind(':id', $id);

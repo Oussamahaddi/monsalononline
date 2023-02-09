@@ -15,13 +15,13 @@
             </div>
             <div class="w-full mx-auto bg-white/20 p-4 sm:w-5/6 sm:h-5/6 grid items-center">
                 <h2 class="text-center font-bold text-4xl">Sign <span class="relative after:content-[''] after:absolute after:bg-white after:h-[2px] after:w-8 after:right-0 after:bottom-0">In</span></h2>
-                <form action="" class="flex flex-col items-center justify-around gap-10">
+                <form  @submit.prevent="login" class="flex flex-col items-center justify-around gap-10">
                     <div>
                         <label for="token" class="font-semibold block mb-2 text-sm">Token</label>
-                        <input type="text" name="token" value="" id="token" class="text-center bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-full block w-full p-2.5 outline-none" placeholder="------">
+                        <input type="text" name="token" v-model="token" id="token" class="text-center bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-full block w-full p-2.5 outline-none" placeholder="------">
                     </div>
                     <div>
-                        <button type="button" class="text-white bg-gradient-to-r from-red-800 via-yellow-600 to-yellow-500 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
+                        <button class="text-white bg-gradient-to-r from-red-800 via-yellow-600 to-yellow-500 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
                     </div>
                 </form>
             </div>
@@ -30,8 +30,40 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Login',
-    
+    data() {
+        return {
+            token : '',
+            error : ''
+        }
+    },
+    methods: {
+        async login() {
+            const response = await axios.post("/Users/login", {
+                token_input : this.token
+            })
+            console.log(response);
+            // redirect
+            // this.$router.push('/');
+            if (response.data.message) {
+                // redirect to home page
+                this.$router.push('/Home');
+                this.$swal({
+                    icon:'success',
+                    title: 'Welcome back',
+                })
+            } else {
+                this.$swal({
+                    icon:'error',
+                    title: 'Oops...',
+                    background:'',
+                    footer: 'You dont have account ? <a href="/Register"><span class="text-blue-500">Register</span></a>',
+                })
+            }
+        }
+    }
 }
 </script>

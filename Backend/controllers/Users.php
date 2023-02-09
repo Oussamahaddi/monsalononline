@@ -16,43 +16,31 @@
                 // Process form
         
                 // Sanitize POST data
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);      
+                $dataa = json_decode(file_get_contents("php://input"));
                 // Init data
                 $data =[
-                    'fname' => trim($_POST['first_name']),
-                    'lname' => trim($_POST['last_name']),
-                    'phone' => trim($_POST['phone']),
-                    'token' => 'M-' . $this->generateRandome(substr($_POST['phone'], 2, 2)),
+                    'fname' => trim($dataa->first_name),
+                    'lname' => trim($dataa->last_name),
+                    'phone' => trim($dataa->phone),
+                    'token' => 'M-' . $this->generateRandome(substr($dataa->phone, 2, 2)),
                     'fname_err' => '',
                     'lname_err' => '',
                     'phone_err' => '',
                 ];
 
-                // Validate fname
-                if(empty($data['first_name'])){
-                    $data['fname_err'] = 'Pleae enter Full Name';
-                }
-                // Validate lname
-                if(empty($data['last_name'])){
-                    $data['lname_err'] = 'Pleae enter email';
-                }
                 // Validate phone
-                if(empty($data['phone'])){
-                    $data['phone_err'] = 'Pleae enter Phone numbre';
+                if($this->userModel->findByPhone($data['phone'])){
+                    $data['phone_err'] = 'Phone numbre is already taken';
+                    echo json_encode(['message' => false]);
                 } else {
-                    // Check phone
-                    if($this->userModel->findByPhone($data['phone'])){
-                        $data['phone_err'] = 'Phone numbre is already taken';
-                        echo json_encode(['message' => 'this numbre is already exist']);
+                    if($this->userModel->registre($data)){
+                        echo json_encode(['message' => $data['token']]);
                     } else {
-                        if($this->userModel->registre($data)){
-                            echo json_encode(['message' => $data['token']]);
-                        } else {
-                            echo json_encode(['message' => 'failed !!!!']);
-                        }
+                        echo json_encode(['message' => 'failed !!!!']);
                     }
                 }
+
 
                 // Make sure errors are empty
                 // if(empty($data['fname_err']) && empty($data['lname_err']) && empty($data['phone_err'])){
@@ -77,9 +65,13 @@
                 // process form
                 // sanitize post data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                
+                // get data from vue
+                $receive = json_decode(file_get_contents("php://input"));
+                
                 // init data
                 $data = [
-                    'token' => trim($_POST['token']),
+                    'token' => trim($receive->token_input),
                     'token_err' => ''
                 ];
 
@@ -89,7 +81,7 @@
                 } else {
                     // Check token
                     if($this->userModel->checkUser($data)){
-                        echo json_encode(['message' => 'login succe']);
+                        echo json_encode(['message' => true]);
                     } else {
                         echo json_encode(['message' => 'login failed !!!!']);
                     }

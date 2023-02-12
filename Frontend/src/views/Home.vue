@@ -1,7 +1,9 @@
 <template>
-    <div class="flex items-center justify-evenly mx-auto w-4/6 bg-white/50 rounded-xl">
-        <Calendar />
-        <Time />
+    <div class="mx-auto bg-white h-screen grid items-center">
+        <Calendar @selectedDay="test" />
+        <div class="w-full flex justify-center my-4">
+            <button @click="" class="text-white bg-gradient-to-r from-red-800 via-yellow-600 to-yellow-500 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center">Confirme Appointement</button>
+        </div>
     </div>
 </template>
 
@@ -20,7 +22,9 @@
             Time,
         },
         methods: {
-            
-        }
+            test(date) {
+                console.log(date);
+            }
+        },
     }
 </script>

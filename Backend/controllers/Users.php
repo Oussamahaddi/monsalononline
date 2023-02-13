@@ -62,13 +62,8 @@
 
             // check for post
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                // process form
-                // sanitize post data
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                
                 // get data from vue
                 $receive = json_decode(file_get_contents("php://input"));
-                
                 // init data
                 $data = [
                     'token' => trim($receive->token_input),
@@ -80,10 +75,11 @@
                     $data['token_err'] = 'Please enter token';
                 } else {
                     // Check token
-                    if($this->userModel->checkUser($data)){
-                        echo json_encode(['message' => true]);
+                    $user = $this->userModel->checkUser($data);
+                    if($user){
+                        echo json_encode(['message' => $user]);
                     } else {
-                        echo json_encode(['message' => 'login failed !!!!']);
+                        echo json_encode(['message' => false]);
                     }
                 }
 
@@ -94,7 +90,6 @@
 
                 //     if ($loginAdmCechk) {
                 //         // create session
-                //         $this->createSession($loginAdmCechk);
                 //     } else if ($loginClientCheck) {
                 //         // if not admin
                 //         $this->createSession($loginClientCheck);
@@ -109,16 +104,10 @@
         }
 
 
-        // public function createSession($unkown) {
+        // public function createSession($data) {
         //     // create session of admin and client
-        //     $_SESSION['Email'] = $unkown->email;
-        //     if ($_SESSION['Email'] == 'oussama@gmail.com') {
-        //         redirect('Dashboards/statistique');
-        //     } else {
-        //         $_SESSION['name'] = $unkown->full_name;
-        //         $_SESSION['id'] = $unkown->id;
-        //         redirect('Pages/index');
-        //     }
+        //     $_SESSION['name'] = $data->first_name;
+        //     echo json_encode(['message' => true]);
         // }
 
 

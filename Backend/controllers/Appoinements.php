@@ -10,23 +10,13 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form
                 // Sanitize POST data
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $recieve = json_decode(file_get_contents("php://input"));
                 // Init data
                 $data =[
-                    'id_client' => 15,
-                    'date' => date('d-m-y'),
-                    'time' => date('h:i:s'),
-                    'date_err' => '',
-                    'time_err' => '',
+                    'id_client' => 33,
+                    'date' => trim($recieve->date),
+                    'time' => trim($recieve->time),
                 ];
-                // Validate fname
-                if(empty($data['date'])){
-                    $data['date_err'] = 'Pleae enter date';
-                }
-                // Validate lname
-                if(empty($data['time'])){
-                    $data['time_err'] = 'Pleae enter time';
-                }
                 $setIt = $this->appoinmenentModel->setAppoinement($data);
                 // Check if is set it
                 if($setIt){

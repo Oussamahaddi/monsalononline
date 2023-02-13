@@ -51,18 +51,17 @@ export default {
             })
             console.log(response);
             // redirect
-            // this.$router.push('/');
             if (response.data.message) {
                 // redirect to home page
                 this.$router.push('/Home');
                 this.$swal({
                     icon:'success',
-                    title: 'Welcome back',
+                    title: `Welcome back ${response.data.message.first_name} ${response.data.message.last_name}`,
                 })
             } else {
                 this.$swal({
                     icon:'error',
-                    title: 'Oops...',
+                    title: 'User not found',
                     background:'',
                     footer: 'You dont have account ? <a href="/Register"><span class="text-blue-500">Register</span></a>',
                 })

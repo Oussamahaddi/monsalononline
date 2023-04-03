@@ -55,10 +55,22 @@
         }
 
         public function deleteAppoinement($id) {
-            $this->db->query("DELETE FROM `rendez_vous` WHERE id = :id");
+            $this->db->query("DELETE FROM `rendez_vous` WHERE id_client = :id");
             $this->db->bind(':id', $id);
             if ($this->db->execute()) {
                 return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        public function getAppByUser($id) {
+            $this->db->query("SELECT * FROM `rendez_vous` WHERE id_client = :id");
+            $this->db->bind(':id', $id);
+            $row = $this->db->single();
+            if ($this->db->rowCount() > 0) {
+                return $row;
             } else {
                 return false;
             }

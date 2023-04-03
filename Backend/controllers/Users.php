@@ -77,6 +77,7 @@
                     // Check token
                     $user = $this->userModel->checkUser($data);
                     if($user){
+                        // $this->createSession($user);
                         echo json_encode(['message' => $user]);
                     } else {
                         echo json_encode(['message' => false]);
@@ -106,18 +107,16 @@
 
         // public function createSession($data) {
         //     // create session of admin and client
-        //     $_SESSION['name'] = $data->first_name;
+        //     $_SESSION['token'] = $data->first_name;
         //     echo json_encode(['message' => true]);
         // }
 
 
-        // public function logOutAdmin() {
-        //     unset($_SESSION['Email']);
-        //     unset($_SESSION['id']);
-        //     unset($_SESSION['name']);
-        //     session_destroy();
-        //     redirect('allPages/index');
-        // }
+        public function logOutAdmin() {
+            unset($_SESSION['id']);
+            unset($_SESSION['name']);
+            session_destroy();
+        }
 
         public function generateRandome($phone) {
             $character = "ABCDEFGHIJKLMNOPRSTQUVWXYZ0123456789";

@@ -49,10 +49,11 @@ export default {
             const response = await axios.post("/Users/login", {
                 token_input : this.token
             })
-            console.log(response);
+            // console.log(response.data.message.token);
             // redirect
             if (response.data.message) {
                 // redirect to home page
+                localStorage.setItem("userToken", JSON.stringify(response.data.message));
                 this.$router.push('/Home');
                 this.$swal({
                     icon:'success',

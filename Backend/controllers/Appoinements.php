@@ -13,7 +13,7 @@
                 $recieve = json_decode(file_get_contents("php://input"));
                 // Init data
                 $data =[
-                    'id_client' => 33,
+                    'id_client' => trim($recieve->id_client),
                     'date' => trim($recieve->date),
                     'time' => trim($recieve->time),
                 ];
@@ -21,7 +21,7 @@
                 // Check if is set it
                 if($setIt){
                     // echo the message if the appoinement set
-                    echo json_encode(['message' => 'appoinement set']);
+                    echo json_encode(['message' => 'appoinement set', 'seted' => true]);
                 } else {
                     echo json_encode(['message' => 'something wrong !!!!!!']);
                 }
@@ -68,7 +68,7 @@
             // Check if is set it
             if($deletApp){
                 // echo the message if the appoinement removed
-                echo json_encode(['message' => 'appoinement deleted']);
+                echo json_encode(['message' => 'appoinement deleted', 'deleted' => true]);
             } else {
                 echo json_encode(['message' => 'something wrong !!!!!!']);
             }
@@ -76,5 +76,9 @@
 
         public function show() {
             echo $this->appoinmenentModel->getAllApp();
+        }
+
+        public function getAppByUser($id) {
+            echo json_encode($this->appoinmenentModel->getAppByUser($id));
         }
     }

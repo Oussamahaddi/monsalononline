@@ -62,7 +62,6 @@
                     last_name : this.lname,
                     phone : this.phone
                 });
-                console.log(response);
                 if (response.data.message === false) {
                     this.error = 'this number already exist';
                 } else {
